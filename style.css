@@ -1,0 +1,375 @@
+@import url('https://fonts.googleapis.com/css2?family=Poor+Story&family=Gamja+Flower&display=swap');
+
+:root {
+  --cream: #FFF9EE;
+  --paper: #FFFDF7;
+  --ink: #4A3F35;
+  --ink-soft: #8A7B6C;
+  --red: #FF6B6B;
+  --orange: #FFA94D;
+  --yellow: #FFD43B;
+  --green: #63D471;
+  --sky: #4FC3F7;
+  --blue: #5C8DFF;
+  --pink: #FF8FC4;
+  --brown: #B08463;
+  --purple: #C58CFF;
+  --line: #E8DFCF;
+  --shadow: 0 6px 0 rgba(74, 63, 53, 0.12);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background-color: var(--cream);
+  background-image:
+    radial-gradient(circle, rgba(74,63,53,0.06) 1.2px, transparent 1.2px);
+  background-size: 22px 22px;
+  color: var(--ink);
+  font-family: 'Poor Story', sans-serif;
+  font-size: 18px;
+}
+
+h1, h2, h3, .crayon-title {
+  font-family: 'Poor Story', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+
+.wrap {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 18px 20px 48px;
+}
+
+/* ---------- Sketchbook header banner ---------- */
+.notebook-header {
+  position: relative;
+  background: linear-gradient(135deg, #FFE3A3, #FFC98B);
+  border-radius: 26px;
+  padding: 22px 28px;
+  margin-bottom: 22px;
+  box-shadow: var(--shadow);
+  border: 3px solid var(--paper);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.notebook-header .spiral {
+  position: absolute;
+  top: -14px;
+  left: 30px;
+  right: 30px;
+  display: flex;
+  justify-content: space-between;
+}
+.notebook-header .spiral span {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 3px solid #D8C9A8;
+  box-shadow: inset 0 2px 3px rgba(0,0,0,0.15);
+}
+
+.notebook-header h1 {
+  margin: 0;
+  font-size: 32px;
+  color: #6B4A2B;
+  text-shadow: 2px 2px 0 rgba(255,255,255,0.6);
+}
+.notebook-header .subtitle {
+  margin: 4px 0 0;
+  color: #7A5B3A;
+  font-size: 16px;
+}
+
+/* ---------- Generic sketchbook card ---------- */
+.card {
+  position: relative;
+  background: var(--paper);
+  border-radius: 22px;
+  border: 2.5px dashed #D8C9A8;
+  box-shadow: var(--shadow);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.card .card-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--yellow);
+  color: #5A4418;
+  font-family: 'Poor Story', sans-serif;
+  font-size: 15px;
+  padding: 4px 14px;
+  border-radius: 999px;
+  transform: rotate(-2deg);
+  box-shadow: 0 3px 0 rgba(0,0,0,0.08);
+  margin-bottom: 12px;
+}
+
+/* ---------- Crayon buttons ---------- */
+.crayon-btn {
+  font-family: 'Poor Story', sans-serif;
+  font-size: 16px;
+  border: none;
+  border-radius: 999px;
+  padding: 11px 22px;
+  cursor: pointer;
+  color: #fff;
+  background: var(--sky);
+  box-shadow: 0 5px 0 rgba(0,0,0,0.15);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.crayon-btn:hover { transform: translateY(-2px) rotate(-1deg); }
+.crayon-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 rgba(0,0,0,0.15); }
+.crayon-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+.crayon-btn.red { background: var(--red); }
+.crayon-btn.orange { background: var(--orange); }
+.crayon-btn.green { background: var(--green); }
+.crayon-btn.purple { background: var(--purple); }
+.crayon-btn.pink { background: var(--pink); }
+.crayon-btn.ghost {
+  background: var(--paper);
+  color: var(--ink);
+  border: 2.5px solid var(--line);
+  box-shadow: 0 4px 0 var(--line);
+}
+.crayon-btn.big { font-size: 20px; padding: 16px 34px; }
+
+.crayon-btn.selected {
+  outline: 3px solid #4A3F35;
+  outline-offset: 2px;
+}
+
+/* ---------- Sentence number grid ---------- */
+.sentence-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 8px;
+}
+.sentence-grid button {
+  font-family: 'Poor Story', sans-serif;
+  padding: 10px 0;
+  border-radius: 12px;
+  border: 2px solid var(--line);
+  background: var(--paper);
+  cursor: pointer;
+  color: var(--ink-soft);
+}
+.sentence-grid button.active {
+  background: var(--green);
+  color: #fff;
+  border-color: var(--green);
+}
+.sentence-grid button.done::after {
+  content: '🖍️';
+  display: block;
+  font-size: 10px;
+}
+
+/* ---------- Timer ---------- */
+.timer-badge {
+  font-family: 'Poor Story', sans-serif;
+  font-size: 40px;
+  color: #fff;
+  background: var(--red);
+  border-radius: 50%;
+  width: 92px;
+  height: 92px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow);
+  border: 4px solid var(--paper);
+}
+.timer-badge.warn { background: var(--orange); }
+.timer-badge.done { background: var(--green); }
+
+/* ---------- Canvas area ---------- */
+.canvas-shell {
+  background: var(--paper);
+  border-radius: 18px;
+  border: 2px solid var(--line);
+  overflow: hidden;
+  touch-action: none;
+  position: relative;
+}
+canvas { display: block; width: 100%; height: 100%; touch-action: none; background: #fff; }
+
+.tool-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.swatch {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 3px solid var(--paper);
+  box-shadow: 0 0 0 2px var(--line);
+  cursor: pointer;
+}
+.swatch.active { box-shadow: 0 0 0 3px var(--ink); transform: scale(1.1); }
+
+/* ---------- Teams grid (reveal) ---------- */
+.teams-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+@media (max-width: 900px) {
+  .teams-grid { grid-template-columns: repeat(2, 1fr); }
+}
+.team-card {
+  background: var(--paper);
+  border-radius: 16px;
+  border: 2px solid var(--line);
+  padding: 10px;
+  text-align: center;
+  position: relative;
+}
+.team-card.winner {
+  border-color: var(--yellow);
+  box-shadow: 0 0 0 4px var(--yellow), var(--shadow);
+}
+.team-card .team-label {
+  font-family: 'Poor Story', sans-serif;
+  margin-bottom: 6px;
+}
+.team-card img, .team-card .placeholder {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+}
+.team-card .placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-soft);
+  font-size: 14px;
+}
+.team-card .crown {
+  position: absolute;
+  top: -16px;
+  right: -6px;
+  font-size: 30px;
+  transform: rotate(18deg);
+}
+.star-row {
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+.star-btn {
+  border: none;
+  background: none;
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  color: #D8C9A8;
+  padding: 2px;
+  transition: transform 0.1s ease;
+}
+.star-btn.filled { color: var(--yellow); text-shadow: 0 1px 0 rgba(0,0,0,0.15); }
+.star-btn:hover { transform: scale(1.2); }
+
+/* ---------- Scoreboard ---------- */
+.scoreboard {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+@media (max-width: 700px) {
+  .scoreboard { grid-template-columns: 1fr; }
+}
+.scoreboard-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--paper);
+  border: 2px solid var(--line);
+  border-radius: 14px;
+  padding: 10px 14px;
+  font-family: 'Poor Story', sans-serif;
+}
+.sb-rank { width: 28px; text-align: center; font-size: 18px; }
+.sb-name { flex: 1; color: var(--ink); }
+.sb-score { color: #D9822B; font-size: 18px; }
+
+/* ---------- Team name step ---------- */
+.name-step {
+  max-width: 360px;
+  margin: 20px auto;
+  text-align: center;
+}
+.name-step input {
+  font-family: 'Poor Story', sans-serif;
+  font-size: 22px;
+  text-align: center;
+  padding: 12px 16px;
+  border-radius: 14px;
+  border: 2.5px solid var(--line);
+  width: 100%;
+  margin: 14px 0;
+  box-sizing: border-box;
+}
+.name-step .chosen-badge {
+  display: inline-block;
+  font-family: 'Poor Story', sans-serif;
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: 999px;
+  font-size: 18px;
+}
+
+/* ---------- Phase banner (team screen) ---------- */
+.phase-banner {
+  font-family: 'Poor Story', sans-serif;
+  text-align: center;
+  padding: 16px;
+  border-radius: 16px;
+  margin-bottom: 16px;
+  font-size: 20px;
+}
+.phase-banner.idle { background: #FFF2CF; color: #8A6A1D; }
+.phase-banner.playing { background: #DFF5E1; color: #2F7A3C; }
+.phase-banner.revealed { background: #E4ECFF; color: #3450A8; }
+
+.team-picker {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  max-width: 420px;
+  margin: 30px auto;
+}
+.team-picker button {
+  font-family: 'Poor Story', sans-serif;
+  font-size: 22px;
+  padding: 22px 0;
+  border-radius: 18px;
+  border: 3px solid var(--paper);
+  color: #fff;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+
+.muted { color: var(--ink-soft); font-size: 14px; }
+.row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.space-between { justify-content: space-between; }
