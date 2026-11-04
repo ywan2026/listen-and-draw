@@ -4,13 +4,13 @@
 // firebaseConfig 값을 그대로 복사해서 아래에 붙여넣으세요.
 
 const firebaseConfig = {
-  apiKey: "여기에-API-KEY를-붙여넣으세요",
-  authDomain: "여기에-authDomain을-붙여넣으세요",
-  databaseURL: "여기에-databaseURL을-붙여넣으세요", // Realtime Database 사용! Firestore 아님
-  projectId: "여기에-projectId를-붙여넣으세요",
-  storageBucket: "여기에-storageBucket을-붙여넣으세요",
-  messagingSenderId: "여기에-messagingSenderId를-붙여넣으세요",
-  appId: "여기에-appId를-붙여넣으세요"
+  apiKey: "AIzaSyBzJ9GlSLz69F7wh-Ghbbnj9U2dnmqRXhU",
+  authDomain: "listen-and-draw.firebaseapp.com",
+  databaseURL: "https://listen-and-draw-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "listen-and-draw",
+  storageBucket: "listen-and-draw.firebasestorage.app",
+  messagingSenderId: "359511249626",
+  appId: "1:359511249626:web:7015898c7f8ae84d1e4be3"
 };
 
 firebase.initializeApp(firebaseConfig);
