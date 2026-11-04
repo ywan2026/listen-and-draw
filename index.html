@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Listen and Draw</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap" id="rootWrap" style="max-width:1100px;">
+
+  <!-- ===== 0단계: 역할 선택 ===== -->
+  <div id="roleScreen">
+    <div class="notebook-header">
+      <div class="spiral">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <div>
+        <h1>🖍️ Listen and Draw</h1>
+        <p class="subtitle">문장을 듣고 그림으로 그려보는 교실 게임이에요. 역할을 선택해주세요!</p>
+      </div>
+    </div>
+    <div class="card" style="text-align:center;">
+      <div class="card-title">누구로 들어갈까요?</div>
+      <div class="role-picker">
+        <button class="crayon-btn big orange" id="roleTeacherBtn">👩‍🏫 선생님으로 로그인</button>
+        <button class="crayon-btn big sky" id="roleStudentBtn">🧒 학생으로 로그인</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 0-1단계: 선생님 비밀번호 ===== -->
+  <div id="teacherPasswordScreen" style="display:none;">
+    <div class="card name-step">
+      <div class="card-title">선생님 비밀번호를 입력하세요</div>
+      <input type="password" id="teacherPasswordInput" maxlength="4" inputmode="numeric" autocomplete="off" placeholder="••••">
+      <p class="muted" id="passwordError" style="display:none; color:var(--red);">비밀번호가 틀렸어요. 다시 입력해주세요.</p>
+      <div>
+        <button class="crayon-btn ghost" id="passwordBackBtn">← 뒤로</button>
+        <button class="crayon-btn green" id="passwordConfirmBtn">입장하기 →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 선생님 화면 ===== -->
+  <div id="teacherScreenRoot" style="display:none;">
+
+    <div class="notebook-header">
+      <div class="spiral">
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <div>
+        <h1>🖍️ Listen and Draw <span class="muted" style="font-size:16px;">(선생님 화면)</span></h1>
+        <p class="subtitle">문장을 들려주고, 제한시간을 골라 그림 대결을 시작하세요!</p>
+      </div>
+      <div style="text-align:right;">
+        <div id="presenceBox" class="muted">접속한 조: 확인 중...</div>
+        <button class="crayon-btn ghost back-to-role-btn" style="margin-top:8px; font-size:12px; padding:7px 14px;">🔑 역할 바꾸기</button>
+        <button class="crayon-btn ghost" id="newGameBtn" style="margin-top:8px; font-size:13px; padding:8px 16px;">🔄 새 게임 시작 (점수 초기화)</button>
+      </div>
+    </div>
+
+    <div class="main-grid">
+      <div class="col-left">
+        <div class="card">
+          <div class="card-title">📒 오늘의 문장 (랜덤 순서)</div>
+          <div class="sentence-grid" id="sentenceGrid"></div>
+
+          <div style="margin-top:12px;">
+            <div class="muted" id="teacherRoundLabel">SENTENCE 01 / 20</div>
+            <h2 id="sentenceText" class="sentence-text is-hidden" style="margin:6px 0 12px;">문장을 불러오는 중...</h2>
+            <div class="row">
+              <button class="crayon-btn purple" id="toggleSentenceBtn">👁️ 문장 보기</button>
+              <button class="crayon-btn sky" id="prevBtn">← 이전</button>
+              <button class="crayon-btn sky" id="nextBtn">다음 →</button>
+              <button class="crayon-btn orange" id="listenBtn">🔊 문장 듣기</button>
+              <button class="crayon-btn ghost" id="stopBtn">⏹ 정지</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">⏱️ 제한시간 선택 후 그리기 시작</div>
+          <div class="row space-between">
+            <div class="row">
+              <button class="crayon-btn green big" id="t10Btn">10초</button>
+              <button class="crayon-btn green big" id="t20Btn">20초</button>
+              <button class="crayon-btn green big" id="t30Btn">30초</button>
+            </div>
+            <div class="timer-badge" id="timerBadge">--</div>
+          </div>
+          <p class="muted" id="phaseText" style="margin:10px 0 0;">문장을 듣고 난 뒤, 시간을 선택해서 라운드를 시작하세요.</p>
+        </div>
+      </div>
+
+      <div class="col-right">
+        <div class="card">
+          <div class="card-title">📊 실시간 점수판</div>
+          <div id="teacherScoreboard" class="scoreboard"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🏆 결과 공개 &amp; 별점 매기기</div>
+      <p class="muted" id="revealHint">⏰ 제한시간이 끝나면 여기에 모든 조의 그림이 한 번에 공개돼요. 그림을 보고 별 1~3개로 점수를 매겨보세요!</p>
+      <div class="answer-row" id="answerRow" style="display:none;">
+        <div class="answer-art-box" id="answerArtBox"></div>
+        <div class="team-label" style="margin:0;">✏️ 정답 그림</div>
+      </div>
+      <div class="teams-grid teams-grid-fixed3" id="teamsGrid"></div>
+    </div>
+
+  </div>
+
+  <!-- ===== 학생(조) 화면 ===== -->
+  <div id="teamScreenRoot" style="display:none;">
+
+    <div class="notebook-header">
+      <div class="spiral">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <div>
+        <h1 id="teamTitle" style="font-size:24px;">🖍️ Listen and Draw</h1>
+        <p class="subtitle" id="roundLabel">대기 중...</p>
+      </div>
+      <div style="text-align:right;">
+        <button class="crayon-btn ghost back-to-role-btn" style="font-size:12px; padding:8px 14px;">🔑 역할 바꾸기</button>
+        <button class="crayon-btn ghost" id="switchTeamBtn" style="font-size:12px; padding:8px 14px; margin-top:6px;">조 변경</button>
+      </div>
+    </div>
+
+    <!-- 1단계: 조 선택 -->
+    <div id="pickerScreen">
+      <div class="card" style="text-align:center;">
+        <div class="card-title">우리 조를 선택하세요</div>
+        <div class="team-picker" id="teamPicker"></div>
+      </div>
+    </div>
+
+    <!-- 2단계: 조 이름 입력 -->
+    <div id="nameScreen" style="display:none;">
+      <div class="card name-step">
+        <div class="card-title">조 이름을 지어주세요 (2~5글자)</div>
+        <div id="chosenBadge" class="chosen-badge"></div>
+        <input type="text" id="nameInput" maxlength="5" placeholder="예: 불꽃여우">
+        <div>
+          <button class="crayon-btn ghost" id="backToPickerBtn">← 다시 선택</button>
+          <button class="crayon-btn green" id="confirmNameBtn">입장하기 →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3단계: 게임 화면 -->
+    <div id="gameScreen" style="display:none;">
+      <div class="team-layout">
+        <div class="sidebar">
+          <div class="card">
+            <div class="card-title">📊 점수판</div>
+            <div id="scoreboard" class="scoreboard vertical"></div>
+          </div>
+        </div>
+
+        <div class="main-col">
+          <div class="phase-banner idle" id="phaseBanner">선생님 화면을 기다리고 있어요</div>
+
+          <div class="card" id="answerCard" style="display:none;">
+            <div class="card-title">📖 오늘 문장은?</div>
+            <p id="answerText" style="font-size:19px; margin:0;"></p>
+          </div>
+
+          <div class="card" id="drawCard">
+            <div class="card-title">🖌️ 우리 조 그림판</div>
+            <div class="tool-row" id="toolRow">
+              <span id="swatches" class="row"></span>
+              <button class="crayon-btn ghost" id="eraserBtn">🧽 지우개</button>
+              <button class="crayon-btn ghost" id="undoBtn">↩ 되돌리기</button>
+              <button class="crayon-btn ghost" id="clearBtn">🗑 비우기</button>
+            </div>
+            <div class="row" style="margin-bottom:10px;">
+              <span class="muted">굵기</span>
+              <input type="range" min="2" max="24" value="6" id="widthRange">
+            </div>
+            <div class="canvas-shell" style="height:260px;">
+              <canvas id="drawCanvas"></canvas>
+            </div>
+          </div>
+
+          <div class="card" id="reviewCard" style="display:none;">
+            <div class="card-title">🏆 다같이 비교해 봐요</div>
+            <div class="answer-row" id="reviewAnswerRow">
+              <div class="answer-art-box" id="reviewAnswerArtBox"></div>
+              <div class="team-label" style="margin:0;">✏️ 정답 그림</div>
+            </div>
+            <div class="teams-grid teams-grid-fixed3" id="reviewGrid"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="sentences.js"></script>
+<script src="answer-art.js"></script>
+<script src="drawing.js"></script>
+<script src="sound.js"></script>
+<script src="teacher.js"></script>
+<script src="team.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
